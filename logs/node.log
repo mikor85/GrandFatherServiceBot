@@ -1,0 +1,13 @@
+2023-04-18 19:51:36 DEBUG ConsumerServiceImpl:30 - NODE: Text message is received
+2023-04-18 19:58:17 DEBUG ConsumerServiceImpl:30 - NODE: Text message is received
+2023-04-19 21:40:43 DEBUG ConsumerServiceImpl:28 - NODE: Text message is received
+2023-04-19 21:41:43 DEBUG ConsumerServiceImpl:28 - NODE: Text message is received
+2023-04-19 21:41:59 DEBUG ConsumerServiceImpl:28 - NODE: Text message is received
+2023-04-19 21:42:01 DEBUG ConsumerServiceImpl:28 - NODE: Text message is received
+2023-04-19 21:42:02 DEBUG ConsumerServiceImpl:28 - NODE: Text message is received
+2023-04-19 22:10:31 DEBUG ConsumerServiceImpl:28 - NODE: Text message is received
+2023-04-19 22:11:01 DEBUG ConsumerServiceImpl:28 - NODE: Text message is received
+2023-04-19 22:12:58 DEBUG ConsumerServiceImpl:28 - NODE: Text message is received
+2023-04-19 22:16:23 DEBUG ConsumerServiceImpl:28 - NODE: Text message is received
+2023-04-20 22:03:08 DEBUG ConsumerServiceImpl:28 - NODE: Text message is received
+2023-04-20 22:08:43 DEBUG ConsumerServiceImpl:28 - NODE: Text message is received
