@@ -28,11 +28,14 @@ public class MainServiceImplTest {
         RawData rawData = RawData.builder()
                 .event(update)
                 .build();
+
         Set<RawData> testData = new HashSet<>();
-
         testData.add(rawData);
-        rawDataDAO.save(rawData);
 
-        Assert.isTrue(testData.contains(rawData), "Entity not found in Set");
+        rawDataDAO.save(rawData);
+        Long rawDataId = rawDataDAO.getById(rawData.getId()).getId();
+
+        //Assert.isTrue(testData.contains(rawData), "Entity not found in Set");
+        Assert.isTrue(rawDataDAO.existsById(rawDataId), "Entity not found in Set");
     }
 }
