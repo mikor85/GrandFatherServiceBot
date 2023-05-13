@@ -4,6 +4,7 @@ import lombok.extern.log4j.Log4j;
 import mi.corvik.dao.AppUserDAO;
 import mi.corvik.dao.RawDataDAO;
 import mi.corvik.entity.AppDocument;
+import mi.corvik.entity.AppPhoto;
 import mi.corvik.entity.AppUser;
 import mi.corvik.entity.RawData;
 import mi.corvik.exceptions.UploadFileException;
@@ -96,10 +97,17 @@ public class MainServiceImpl implements MainService {
             return;
         }
 
-        // TODO добавить сохранение фото
-        var answer = "Photo has been successfully loaded! " +
-                "Download link: http://test.ru/get-photo/777";
-        sendAnswer(answer, chatId);
+        try {
+            AppPhoto photo = fileService.processPhoto(update.getMessage());
+            // TODO добавить генерацию ссылки для скачивания фото
+            var answer = "Photo has been successfully loaded! "
+                    + "Download link: http://test.ru/get-photo/777";
+            sendAnswer(answer, chatId);
+        } catch (UploadFileException uploadFileException) {
+            log.error(uploadFileException);
+            String error = "Unfortunately, the photo upload failed. Please try again later.";
+            sendAnswer(error, chatId);
+        }
     }
 
     private boolean isNotAllowToSendContent(Long chatId, AppUser appUser) {
