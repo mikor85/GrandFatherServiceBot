@@ -9,6 +9,8 @@ import mi.corvik.entity.AppPhoto;
 import mi.corvik.entity.BinaryContent;
 import mi.corvik.exceptions.UploadFileException;
 import mi.corvik.service.FileService;
+import mi.corvik.service.enums.LinkType;
+import mi.corvik.utils.CryptoTool;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -33,14 +35,18 @@ public class FileServiceImpl implements FileService {
     private String fileInfoUri;
     @Value("${service.file_storage.uri}")
     private String fileStorageUri;
+    @Value("${link.address}")
+    private String linkAddress;
     private final AppDocumentDAO appDocumentDAO;
     private final AppPhotoDAO appPhotoDAO;
     private final BinaryContentDAO binaryContentDAO;
+    private final CryptoTool cryptoTool;
 
-    public FileServiceImpl(AppDocumentDAO appDocumentDAO, AppPhotoDAO appPhotoDAO, BinaryContentDAO binaryContentDAO) {
+    public FileServiceImpl(AppDocumentDAO appDocumentDAO, AppPhotoDAO appPhotoDAO, BinaryContentDAO binaryContentDAO, CryptoTool cryptoTool) {
         this.appDocumentDAO = appDocumentDAO;
         this.appPhotoDAO = appPhotoDAO;
         this.binaryContentDAO = binaryContentDAO;
+        this.cryptoTool = cryptoTool;
     }
 
     @Override
@@ -59,8 +65,9 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public AppPhoto processPhoto(Message telegramMessage) {
-        // TODO пока что обрабатываем только одно фото в сообщении
-        PhotoSize telegramPhoto = telegramMessage.getPhoto().get(0);
+        var photoSizeCount = telegramMessage.getPhoto().size();
+        var photoIndex = photoSizeCount > 1 ? telegramMessage.getPhoto().size() - 1 : 0;
+        PhotoSize telegramPhoto = telegramMessage.getPhoto().get(photoIndex);
         String fileId = telegramPhoto.getFileId();
         ResponseEntity<String> response = getFilePath(fileId);
         if (response.getStatusCode() == HttpStatus.OK) {
@@ -137,5 +144,11 @@ public class FileServiceImpl implements FileService {
         } catch (IOException e) {
             throw new UploadFileException(urlObj.toExternalForm(), e);
         }
+    }
+
+    @Override
+    public String generateLink(Long fileId, LinkType linkType) {
+        var hash = cryptoTool.hashOf(fileId);
+        return "http://" + linkAddress + "/" + linkType + "?id=" + hash;
     }
 }

@@ -11,6 +11,7 @@ import mi.corvik.exceptions.UploadFileException;
 import mi.corvik.service.FileService;
 import mi.corvik.service.MainService;
 import mi.corvik.service.ProducerService;
+import mi.corvik.service.enums.LinkType;
 import mi.corvik.service.enums.ServiceCommand;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -77,9 +78,9 @@ public class MainServiceImpl implements MainService {
 
         try {
             AppDocument doc = fileService.processDoc(update.getMessage());
-            // TODO Добавить генерацию ссылки для скачивания документа
-            var answer = "Document has been successfully loaded! " +
-                    "Download link: http://test.ru/get-doc/777";
+            String link = fileService.generateLink(doc.getId(), LinkType.GET_DOC);
+            var answer = "Document has been successfully loaded! "
+                    + "Download link: " + link;
             sendAnswer(answer, chatId);
         } catch (UploadFileException uploadFileException) {
             log.error(uploadFileException);
@@ -99,9 +100,9 @@ public class MainServiceImpl implements MainService {
 
         try {
             AppPhoto photo = fileService.processPhoto(update.getMessage());
-            // TODO добавить генерацию ссылки для скачивания фото
+            String link = fileService.generateLink(photo.getId(), LinkType.GET_PHOTO);
             var answer = "Photo has been successfully loaded! "
-                    + "Download link: http://test.ru/get-photo/777";
+                    + "Download link: " + link;
             sendAnswer(answer, chatId);
         } catch (UploadFileException uploadFileException) {
             log.error(uploadFileException);
