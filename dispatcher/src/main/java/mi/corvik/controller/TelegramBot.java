@@ -45,12 +45,12 @@ public class TelegramBot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
 
         /*
-         * This code section was like a test, but after the UpdateController creation it not required.
+         * This code section was like a test, but after the UpdateController creation it's not required anymore.
          * */
+
         /*
         var originalMessage = update.getMessage();
         log.debug(originalMessage.getText());
-
         var response = new SendMessage();
         response.setChatId(originalMessage.getChatId().toString());
         response.setText("Hello from Bot");
